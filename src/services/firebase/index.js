@@ -13,21 +13,30 @@ const config = {
 
 firebase.initializeApp(config);
 
-const dbRef = firebase.database().ref('web');
+const peopleRef = firebase.database().ref('people');
 
-const yourId = Math.floor(Math.random() * 1000000000);
+function getPerson(name) {
+  return peopleRef
+    .orderByChild('name')
+    .equalTo(name)
+    .once('value')
+    .then(snapshot => {
+      const matchedPeople = [];
+      snapshot.forEach(childSnapshot => {
+        const childData = childSnapshot.val();
+        matchedPeople.push(childData);
+      });
 
-const sendMessage = data => {
-  console.debug('sendMessage', data);
-  // firebase
-  //   .database()
-  //   .ref('web')
-  //   .set({
-  //     data,
-  //   });
-  dbRef.set({ sender: yourId, message: JSON.stringify(data) });
-};
-export { sendMessage };
-// //export default dbRef;
+      return matchedPeople.length >= 1 ? matchedPeople[0] : null;
+    });
+}
 
-// export { sendMessage, yourId };
+function createPerson(name) {
+  return peopleRef.push({ name, inCommingPerson: null, inCallingPerson: null });
+}
+
+function subPeople(callback = () => null) {
+  return peopleRef.on('child_added').then(snapshot => callback(snapshot.val()));
+}
+
+export { getPerson, createPerson, subPeople };

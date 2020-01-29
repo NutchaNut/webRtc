@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Videostream from 'components/videostream';
 // import fb, { sendMessage, yourId } from 'services/firebase';
-import { sendMessage } from 'services/firebase';
+import { sendMessage, onlineWeb, sendIce, dbRef, getFriendData } from 'services/firebase';
 import pc from '../../services/WebRTCConnection';
 
 function Homepage() {
@@ -9,9 +9,16 @@ function Homepage() {
   const [remoteStream, setRemoteStream] = useState(null);
 
   const readMessage = async data => {
-    // const msg = JSON.parse(data.val().message);
-    console.log('Message' + data);
-
+    //const msg = JSON.parse(data.val().message);
+    let friendData = {};
+    //console.log('Message', data.val());
+    if (data.val().message) {
+      console.log('ok');
+      friendData = await getFriendData(data.val().message);
+      console.log('friendData', friendData.candidate);
+      //if (friendData.candidate) pc.addIceCandidate(new RTCIceCandidate(friendData.candidate));
+      //pc.setRemoteDescription(new RTCSessionDescription(friendData.sdp));
+    }
     // const sender = { ...data.val() };
     // if (sender !== yourId) {
     //   if (msg.ice) pc.addIceCandidate(new RTCIceCandidate(msg.ice));
@@ -26,12 +33,13 @@ function Homepage() {
     // }
   };
 
-  // pc.onicecandidate = event => {
-  //   if (event.candidate) Fire.shared.sendMessage({ ice: event.candidate });
-  //   else console.log('Sent all ice');
-  // };
+  pc.onicecandidate = event => {
+    if (event.candidate) sendIce(event.candidate);
+    else console.log('Sent all ice');
+  };
 
   pc.ontrack = event => {
+    console.log('ontrack');
     if (event.streams && event.streams[0]) {
       setRemoteStream(event.streams[0]);
     } else {
@@ -53,24 +61,27 @@ function Homepage() {
       for (const track of stream.getTracks()) {
         pc.addTrack(track, stream);
       }
+      onlineWeb();
       setLocalStream(stream);
     };
 
     showMyFace();
 
-    //Fire.on('child_added', readMessage);
+    dbRef.on('child_added', readMessage);
   }, []);
 
   const showFriendsFace = async () => {
+    console.log('senddd');
     const offer = await pc.createOffer();
     await pc.setLocalDescription(offer);
-    sendMessage({ sdp: pc.localDescription });
+    sendMessage(pc.localDescription);
+    console.log(pc.localDescription);
   };
 
   return (
     <section className="homepage">
       <div className="stream">
-        <Videostream src={localStream} autoplay muted />
+        <Videostream src={localStream} autoplay mute />
         <Videostream src={remoteStream} autoplay />
       </div>
       <button type="button" onClick={showFriendsFace}>

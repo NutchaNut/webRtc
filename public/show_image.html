@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<title>calling</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.mySlides {display:none;}
+</style>
+<body style="background-color:white;">
+
+<div class="w3-display-container">
+  <br><br>
+  <div class="w3-card w3-white" style="width:100%">
+
+      <div class="w3-container w3-center">
+      <br>
+        <img src="https://www.w3schools.com/w3css/img_rr_04.jpg" alt="Avatar" style="width:100%;height:350px">
+
+             <h1>กำลังขับรถไปหาคุณยาย ;)</h1>
+               
+      </div>
+  </div>
+</div>
+
+</body>
+</html>
+
+
+<script>
+var slideIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none"; 
+  }
+  slideIndex++;
+  if (slideIndex > x.length) {slideIndex = 1} 
+  x[slideIndex-1].style.display = "block"; 
+  setTimeout(carousel, 1000); 
+}
+</script>

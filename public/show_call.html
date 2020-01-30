@@ -1,0 +1,66 @@
+<!--   background-image: url('https://www.w3schools.com/w3images/woods.jpg');
+ -->
+ <!DOCTYPE html>
+ <html>
+ <title>calling</title>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <style>
+ .mySlides {display:none;}
+ </style>
+ <body>
+ 
+ <div class="w3-display-container">
+   <div class="w3-card w3-khaki" style="width:100%;height: 100%">
+     <br>
+       <div class="w3-container w3-center">
+ 
+       <br><br><br>
+        <h1 class="w3-text-black">น้องพร</h1>
+         <img src="https://www.w3schools.com/w3images/parallax1.jpg" alt="Avatar" style="width:70%;height:350px">
+ <!--         <h2 class="w3-text-white mySlides">น้องพร โทรเข้า...</h2>
+  -->        
+ <br><br><br>
+ 
+           <div class="w3-row">
+             <div class="w3-third w3-center">
+               <i class="fa fa-image w3-xxxlarge w3-text-blue"></i><h1 class="w3-text-blue">กดปุ่มสีฟ้าดูรูปภาพ</h1>
+             </div>
+ 
+                 <div class="w3-third w3-center">
+               <p class="w3-xxxlarge w3-text-light-green"></p>
+             </div>
+ 
+             <div class="w3-third w3-center w3-margin-bottom">
+              <i class="fa fa-phone w3-xxxlarge w3-text-green"></i> <h1 class="w3-text-green">กดปุ่มสีเขียวโทรออก</h1>
+             </div>
+             <input class="w3-input" name="username" id="username" type="text">
+
+           </div>
+       </div>
+   </div>
+ </div>
+ 
+ </body>
+ </html>
+ 
+ 
+ <script>
+ var slideIndex = 0;
+ carousel();
+ 
+ function carousel() {
+   var i;
+   var x = document.getElementsByClassName("mySlides");
+   for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none"; 
+   }
+   slideIndex++;
+   if (slideIndex > x.length) {slideIndex = 1} 
+   x[slideIndex-1].style.display = "block"; 
+   setTimeout(carousel, 1000); 
+ }
+ </script>

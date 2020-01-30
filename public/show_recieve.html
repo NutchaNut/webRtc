@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<title>calling</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.mySlides {display:none;}
+</style>
+<body style="background-color:blue;">
+
+<div class="w3-display-container">
+  <div class="w3-card w3-blue" style="width:100%">
+
+      <div class="w3-container w3-center">
+      <br>
+        <img src="https://www.w3schools.com/w3images/parallax1.jpg" alt="Avatar" style="width:70%;height:350px">
+        <h2 class="w3-text-white mySlides">น้องพร โทรเข้า...</h2>
+        <h2 class="w3-text-amber mySlides">น้องพร โทรเข้า...</h2>
+
+          <div class="w3-row">
+            <div class="w3-third w3-center">
+              <i class="fa fa-phone w3-xxxlarge w3-text-light-green"></i><h1>กดปุ่มสีเขียวรับสาย</h1>
+            </div>
+                <div class="w3-third w3-center">
+              <p class="w3-xxxlarge w3-text-light-green"></p>
+            </div>
+            <div class="w3-third w3-center w3-margin-bottom">
+             <i class="fa fa-phone w3-xxxlarge w3-text-red"></i> <h1>กดปุ่มสีแดงวางสาย</h1>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+</body>
+</html>
+
+
+<script>
+var slideIndex = 0;
+carousel();
+
+function carousel() {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none"; 
+  }
+  slideIndex++;
+  if (slideIndex > x.length) {slideIndex = 1} 
+  x[slideIndex-1].style.display = "block"; 
+  setTimeout(carousel, 1000); 
+}
+</script>

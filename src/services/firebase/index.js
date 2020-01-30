@@ -23,8 +23,9 @@ function getPerson(name) {
     .then(snapshot => {
       const matchedPeople = [];
       snapshot.forEach(childSnapshot => {
-        const childData = childSnapshot.val();
-        matchedPeople.push(childData);
+        const id = childSnapshot.key;
+        const person = childSnapshot.val();
+        matchedPeople.push({ id, ...person });
       });
 
       return matchedPeople.length >= 1 ? matchedPeople[0] : null;
@@ -32,11 +33,66 @@ function getPerson(name) {
 }
 
 function createPerson(name) {
-  return peopleRef.push({ name, inCommingPerson: null, inCallingPerson: null });
+  return peopleRef.push({ name, inCommingPerson: null, inCallingPerson: null }).key;
 }
 
-function subPeople(callback = () => null) {
-  return peopleRef.on('child_added').then(snapshot => callback(snapshot.val()));
+function onPersonAdded(callback = () => null) {
+  return peopleRef.on('child_added', snapshot =>
+    callback({ id: snapshot.key, name: snapshot.val().name }),
+  );
 }
 
-export { getPerson, createPerson, subPeople };
+function startOffer({ callerID, calleeID }, callback) {
+  const ref = firebase.database().ref(`people/${calleeID}/offer`);
+
+  // Set value of the offer
+  ref.set({ callerID, isAnswer: false });
+
+  // Create off function, let use to close the reference
+  function off() {
+    ref.off();
+  }
+
+  function cancleCalling() {
+    ref.remove();
+    off();
+  }
+
+  function updateRoomID(roomID) {
+    ref.update({ roomID });
+  }
+
+  ref.on('value', snapshot => {
+    const offer = snapshot.val();
+    if (offer) {
+      callback({ ...offer, updateRoomID }, off);
+      return;
+    }
+    callback(null, off);
+  });
+
+  return cancleCalling;
+}
+
+function listeningOffer(id, callback) {
+  const ref = firebase.database().ref(`people/${id}/offer`);
+
+  function cancle() {
+    ref.remove();
+  }
+
+  ref.on('value', snapshot => {
+    const offer = snapshot.val();
+    if (offer) {
+      function answer() {
+        ref.update({ isAnswer: true });
+      }
+
+      callback({ ...offer, cancle, answer });
+      return;
+    }
+    callback(null);
+  });
+}
+
+export { getPerson, createPerson, onPersonAdded, startOffer, listeningOffer };

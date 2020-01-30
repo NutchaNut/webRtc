@@ -133,8 +133,13 @@ function Homepage() {
       {call.answer && <button onClick={call.answer}>Answer calling</button>}
       {call.cancle && <button onClick={call.cancle}>Stop calling</button>}
       <div className="stream">
-        <Videostream src={localStream} autoplay mute />
-        <Videostream src={remoteStream} autoplay />
+        <Videostream
+          src={localStream}
+          autoplay
+          mute
+          layout={{ position: 'absolute', width: '120px', height: '140px' }}
+        />
+        <Videostream src={remoteStream} autoplay layout={{ width: '400px', height: '700px' }} />
       </div>
       <ul>
         {people

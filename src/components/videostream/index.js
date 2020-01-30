@@ -5,7 +5,7 @@ const layout = {
   width: '300px',
 };
 
-function Videostream({ src, autoplay, muted }) {
+function Videostream({ src, autoplay, muted, layout }) {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ function Videostream({ src, autoplay, muted }) {
 
   return (
     // eslint-disable-next-line jsx-a11y/media-has-caption
-    <video {...layout} ref={videoRef} autoPlay={autoplay} muted={muted} />
+    <video style={layout} ref={videoRef} autoPlay={autoplay} muted={muted} />
   );
 }
 
